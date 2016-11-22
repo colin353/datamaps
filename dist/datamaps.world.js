@@ -382,6 +382,9 @@
                    case "CHL":
                        originXY = self.latLngToXY(-33.448890, -70.669265);
                        break;
+                   case "HRV":
+                       originXY = self.latLngToXY(45.815011, 15.981919);
+                       break;
                    case "IDN":
                        originXY = self.latLngToXY(-6.208763, 106.845599);
                        break;
@@ -409,11 +412,14 @@
 
             if (typeof datum.destination === 'string') {
               switch (datum.destination) {
-                     case "CAN":
+                    case "CAN":
                         destXY = self.latLngToXY(56.624472, -114.665293);
                         break;
                     case "CHL":
                         destXY = self.latLngToXY(-33.448890, -70.669265);
+                        break;
+                    case "HRV":
+                        destXY = self.latLngToXY(45.815011, 15.981919);
                         break;
                     case "IDN":
                         destXY = self.latLngToXY(-6.208763, 106.845599);
@@ -12581,9 +12587,12 @@
           var geo = this.svg.select('.' + subunit).attr('data-info', JSON.stringify(this.options.data[subunit]));
         }
         svg
-          .selectAll('.' + subunit)
+          // If the subunit is of the form `XX.YY`, it will cause issues
+          // with creating a valid CSS selector. So we'll need to replace
+          // any "." inside the subunit with an escaped "\\.".
+          .selectAll('.' + subunit.replace('.', '\\.'))
           .transition()
-            .style('fill', color);
+          .style('fill', color);
       }
     }
   };
